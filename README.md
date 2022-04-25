@@ -1,4 +1,4 @@
-# Financial Orgnizer "YellowPlan"
+# Financial Organizer "YellowPlan"
 Simple, flexible and useful financial organizer mainly created to follow the "Yellow Plan" distribution.
 
 ## Motivation

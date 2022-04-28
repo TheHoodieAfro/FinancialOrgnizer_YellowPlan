@@ -1,11 +1,6 @@
 from flask import Flask
 
-app = Flask(__name__)
-
-@app.route('/')
-def hello():
-    return 'hellold'
-
+# Aplication classes
 class Distribution:
     '''Class depicting the plan money distributions'''
 
@@ -26,3 +21,50 @@ class Location:
 
     def __init__(self, name):
         self.name = name
+
+        self.money={}
+
+# Aplication variables
+distributions=[]
+
+locations=[]
+
+plan_status = False
+
+# Application logic
+## Basic functions
+def create_distribution(percentage, name, total_month, total):
+    distributions.append(Distribution(percentage, name, total_month, total))
+
+def create_location(name, total):
+    locations.append(Location(name))
+
+def check_total_percentage():
+    percentage = 0
+
+    for dist in distributions:
+        percentage += dist.percentage
+    
+    return True if percentage==100 else False
+
+def edit_percentage(distribution, new_percentage):
+    for dist in distributions:
+        if dist.name == distribution:
+            dist.percentage = new_percentage
+    return
+
+## Advanced functions
+def start_plan():
+    if check_total_percentage() == False:
+        return False
+    
+    for loc in locations:
+        for dist in distributions:
+            loc.money[dist.name] = 0
+
+# Application API
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return 'hellold'

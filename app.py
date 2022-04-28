@@ -5,7 +5,7 @@ class Distribution:
     '''Class depicting the plan money distributions'''
 
     def __init__(self, percentage, name, total_month, total=0):
-        if (percentage <= 0 and percentage > 100):
+        if (percentage < 0 and percentage > 100):
             self.percentage = percentage
         else:
             raise Exception('The percentage for a distribution cannot be 0 or below, or over 100')
@@ -48,10 +48,18 @@ def check_total_percentage():
     return True if percentage==100 else False
 
 def edit_percentage(distribution, new_percentage):
+    cond = False
+
     for dist in distributions:
         if dist.name == distribution:
             dist.percentage = new_percentage
-    return
+            cond = True
+    return cond
+
+def add_previous_money(location, distribution, money):
+    for loc in locations:
+        if loc.name == location:
+            loc.money[distribution] = money
 
 ## Advanced functions
 def start_plan():

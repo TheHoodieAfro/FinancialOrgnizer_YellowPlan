@@ -60,6 +60,10 @@ def add_previous_money(location, distribution, money):
     for loc in locations:
         if loc.name == location:
             loc.money[distribution] = money
+    
+    for dist in distributions:
+        if dist.name == distribution:
+            dist.total = money
 
 ## Advanced functions
 def start_plan():
@@ -69,6 +73,15 @@ def start_plan():
     for loc in locations:
         for dist in distributions:
             loc.money[dist.name] = 0
+
+def static_income(location, money):
+    for dist in distributions:
+        por = dist.percentage * money
+        dist.total_month = por
+
+        for loc in locations:
+            if loc.name == location:
+                loc.money[dist.name] = por
 
 # Application API
 app = Flask(__name__)

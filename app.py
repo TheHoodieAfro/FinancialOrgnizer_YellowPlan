@@ -4,7 +4,7 @@ from flask import Flask
 class Distribution:
     '''Class depicting the plan money distributions'''
 
-    def __init__(self, percentage, name):
+    def __init__(self, percentage, name):        
         if (percentage < 0 and percentage > 100):
             self.percentage = percentage
         else:
@@ -27,7 +27,7 @@ class Location:
         self.money={}
 
 class expense:
-
+    
     def __init__(self, money, description, location, distribution):
         self.money = money
         
@@ -191,4 +191,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
+    """hjdbashdujbsajhdbsb
+
+    Returns:
+        jkdasbdknaskj: kjasdnkjdaasd
+    """    
     return 'hellold'

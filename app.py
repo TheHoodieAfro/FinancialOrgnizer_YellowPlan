@@ -190,10 +190,5 @@ def end_month():
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
-    """hjdbashdujbsajhdbsb
-
-    Returns:
-        jkdasbdknaskj: kjasdnkjdaasd
-    """    
+def hello():   
     return 'hellold'

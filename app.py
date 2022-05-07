@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import render_template
 
 # Aplication variables
 distributions=[]
@@ -201,5 +202,7 @@ def end_month():
 app = Flask(__name__)
 
 @app.route('/')
-def hello():   
-    return 'hello word'
+def dashboard():
+    n_distributions = '{} distributions'.format(len(distributions))
+    n_locations = '{} locations'.format(len(locations))
+    return render_template('/dashboard.html', distributions=n_distributions)

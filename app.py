@@ -1,5 +1,10 @@
 from flask import Flask
 
+# Aplication variables
+distributions=[]
+
+locations=[]
+
 # Aplication classes
 class Distribution:
     '''Class depicting the plan money distributions'''
@@ -36,13 +41,6 @@ class expense:
         self.location = location
 
         self.distribution = distribution
-
-# Aplication variables
-distributions=[]
-
-locations=[]
-
-plan_status = False
 
 # Application logic
 ## Basic functions
@@ -204,4 +202,4 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():   
-    return 'hellold'
+    return 'hello word'

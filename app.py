@@ -182,6 +182,8 @@ def spend_money(money, location, distribution, month):
     return True
 
 def end_month():
+    """asdasdasdsad
+    """    
     for dist in distributions:
         dist.total += dist.total_money
         dist.total_money = 0

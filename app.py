@@ -4,7 +4,7 @@ from flask import Flask
 class Distribution:
     '''Class depicting the plan money distributions'''
 
-    def __init__(self, percentage, name, total_month, total=0):
+    def __init__(self, percentage, name):
         if (percentage < 0 and percentage > 100):
             self.percentage = percentage
         else:
@@ -12,9 +12,9 @@ class Distribution:
 
         self.name = name
 
-        self.total_month = total_month
+        self.total_month = 0
 
-        self.total=total
+        self.total = 0
 
 class Location:
     '''Class depicting the location of the money'''
@@ -22,7 +22,20 @@ class Location:
     def __init__(self, name):
         self.name = name
 
+        self.total = 0
+
         self.money={}
+
+class expense:
+
+    def __init__(self, money, description, location, distribution):
+        self.money = money
+        
+        self.description = description
+
+        self.location = location
+
+        self.distribution = distribution
 
 # Aplication variables
 distributions=[]
@@ -33,8 +46,8 @@ plan_status = False
 
 # Application logic
 ## Basic functions
-def create_distribution(percentage, name, total_month, total):
-    distributions.append(Distribution(percentage, name, total_month, total))
+def create_distribution(percentage, name):
+    distributions.append(Distribution(percentage, name))
 
 def create_location(name, total):
     locations.append(Location(name))
@@ -48,22 +61,15 @@ def check_total_percentage():
     return True if percentage==100 else False
 
 def edit_percentage(distribution, new_percentage):
-    cond = False
-
-    for dist in distributions:
-        if dist.name == distribution:
-            dist.percentage = new_percentage
-            cond = True
-    return cond
-
-def add_previous_money(location, distribution, money):
-    for loc in locations:
-        if loc.name == location:
-            loc.money[distribution] = money
+    temp = [x for x in distributions if x.name == distribution]
     
-    for dist in distributions:
-        if dist.name == distribution:
-            dist.total = money
+    if temp.len() == 0:
+        return False
+        
+    else:
+        temp[0].percentage = new_percentage
+        
+        return True
 
 ## Advanced functions
 def start_plan():
@@ -74,14 +80,111 @@ def start_plan():
         for dist in distributions:
             loc.money[dist.name] = 0
 
+def add_previous_money(location, distribution, money):
+    for loc in locations:
+        if loc.name == location:
+            loc.money[distribution] = money
+    
+    for dist in distributions:
+        if dist.name == distribution:
+            dist.total = money
+
 def static_income(location, money):
     for dist in distributions:
         por = dist.percentage * money
-        dist.total_month = por
+        dist.total_month += por
 
         for loc in locations:
             if loc.name == location:
-                loc.money[dist.name] = por
+                loc.money[dist.name] += por
+
+def variable_income(distribution, location, money):
+    for loc in locations:
+        if loc.name == location:
+            loc.money[distribution] += money
+    
+    for dist in distributions:
+        if dist.name == distribution:
+            dist.total_month += money
+
+def move_money_location(location_origin, location_end, distribution, money):
+    i = 0
+    origin = 0
+    end = 0
+
+    for loc in locations:
+        if loc.name == location_origin:
+            origin = i
+        elif loc.name == location_end:
+            end = i
+
+        i += 1
+
+    if locations[origin].money[distribution] >= money:
+        locations[origin].money[distribution] += -money
+        locations[end].money[distribution] += money
+    else:
+        return False
+
+    return True
+
+def move_money_distribution(distribution_origin, distribution_end, location, money, month):
+    i = 0
+    origin = 0
+    end = 0
+
+    for dist in locations:
+        if dist.name == distribution_origin:
+            origin = i
+        elif dist.name == distribution_end:
+            end = i
+
+        i += 1
+
+    if month == True:
+        if distributions[origin].total_month >= money:
+            distributions[origin].total_month += -money
+            distributions[end].total_month += money
+        else:
+            return False
+    else:
+        if distributions[origin].total >= money:
+            distributions[origin].total += -money
+            distributions[end].total += money
+        else:
+            return False
+    
+    for loc in locations:
+        if loc.name == location:
+            loc.money[distribution_origin] += -money
+            loc.money[distribution_end] += money
+
+            break
+
+    return True
+
+def spend_money(money, location, distribution, month):
+    for loc in locations:
+        if loc.name == location:
+            if loc[distribution] >= money:
+                loc[distribution] += -money
+                break
+            else:
+                return False
+
+    for dist in distributions:
+        if dist.name == distribution:
+            if month == True:
+                dist.total_month += -money
+            else:
+                dist.total += -money
+    
+    return True
+
+def end_month():
+    for dist in distributions:
+        dist.total += dist.total_money
+        dist.total_money = 0
 
 # Application API
 app = Flask(__name__)

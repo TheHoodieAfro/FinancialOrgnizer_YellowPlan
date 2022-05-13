@@ -1,5 +1,4 @@
-from flask import Flask
-from flask import render_template
+from flask import Flask, render_template, request
 
 # Aplication variables
 distributions=[]
@@ -203,6 +202,4 @@ app = Flask(__name__)
 
 @app.route('/')
 def dashboard():
-    n_distributions = '{} distributions'.format(len(distributions))
-    n_locations = '{} locations'.format(len(locations))
-    return render_template('/dashboard.html', distributions=n_distributions)
+    return render_template('/dashboard.html')

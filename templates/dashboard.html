@@ -10,20 +10,65 @@
 
     <body>
 
-        <p>{{ distributions }} distributions</p>
+        <table>
 
-        <form action="" method="post">
+            <tr>
+                <th>Distribution</th>
+                <th>Total</th>
+                <th>Month</th>
+            </tr>
 
-            <label for="name">Name: </label>
-            <input type="text" name="name" id="name">
-            <br>
+            <tr>
+                <td>Ahorro</td>
+                <td>1000000</td>
+                <td>1000000</td>
+            </tr>
 
-            <label for="percentage">Percentage: </label>
-            <input type="text" name="percentage" id="percentage">
-            <br>
+        </table>
 
-            <input type="submit" id="submit_distribution" name="submit_distribution" value="add_distribution">
+        <table>
+            
+            <tr>
+                <th>Location</th>
+                <th>Money</th>
+            </tr>
 
+            <tr>
+                <td>Ahorro</td>
+                <td>522222</td>
+            </tr>
+
+        </table>
+
+        <button name="end_month" id="end_month">End month</button>
+
+        <form action="/lol" method="post">
+
+            <label for="cost">Cost: </label>
+            <input type="text" name="cost" id="cost">
+
+            <label for="distribution">Distribution: </label>
+            <input list="distributions" name="distribution" id="distribution">
+                <datalist id="distributions">
+                    <option value="ahorro"></option>
+                    <option value="emergency"></option>
+                    <option value="investment"></option>
+                    <option value="gastos"></option>
+                </datalist>
+
+            <label for="location">Location: </label>
+            <input list="locattions" name="locatio" id="location">
+                <datalist id="locattions">
+                    <option value="cash"></option>
+                    <option value="rappi"></option>
+                    <option value="emergency"></option>
+                    <option value="bank"></option>
+                </datalist>
+
+            <label for="month">Take from month?</label>
+            <input type="checkbox" name="month" id="month">
+
+            <button type="submit">lol</button>
         </form>
 
     </body>

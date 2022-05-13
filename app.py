@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 # Aplication variables
 distributions=[]
@@ -7,7 +7,8 @@ locations=[]
 
 # Aplication classes
 class Distribution:
-    '''Class depicting the plan money distributions'''
+    """Class depicting the plan money distributions
+    """    
 
     def __init__(self, percentage, name):        
         if (percentage < 0 and percentage > 100):
@@ -22,7 +23,8 @@ class Distribution:
         self.total = 0
 
 class Location:
-    '''Class depicting the location of the money'''
+    """Class depicting the location of the money
+    """    
 
     def __init__(self, name):
         self.name = name
@@ -32,6 +34,8 @@ class Location:
         self.money={}
 
 class expense:
+    """Class depicting the expenses
+    """    
     
     def __init__(self, money, description, location, distribution):
         self.money = money
@@ -203,3 +207,7 @@ app = Flask(__name__)
 @app.route('/')
 def dashboard():
     return render_template('/dashboard.html')
+
+@app.route('/lol', methods=['POST'])
+def lol():
+    return render_template('/test.html')

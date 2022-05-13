@@ -1,4 +1,9 @@
-from flask import Flask
+from flask import Flask, render_template, request
+
+# Aplication variables
+distributions=[]
+
+locations=[]
 
 # Aplication classes
 class Distribution:
@@ -36,13 +41,6 @@ class expense:
         self.location = location
 
         self.distribution = distribution
-
-# Aplication variables
-distributions=[]
-
-locations=[]
-
-plan_status = False
 
 # Application logic
 ## Basic functions
@@ -164,6 +162,17 @@ def move_money_distribution(distribution_origin, distribution_end, location, mon
     return True
 
 def spend_money(money, location, distribution, month):
+    """Spends money from the especified location and distribution
+
+    Args:
+        money (float): Amount of money to spend
+        location (string): Location where the money was taken from
+        distribution (string): Distribution where the money was used from
+        month (boolean): Flag defining if the money should be taken from the full total or month total
+
+    Returns:
+        boolean: True if the money was spent, false if not
+    """    
     for loc in locations:
         if loc.name == location:
             if loc[distribution] >= money:
@@ -182,7 +191,7 @@ def spend_money(money, location, distribution, month):
     return True
 
 def end_month():
-    """asdasdasdsad
+    """Merges the total amount of money with the money of the month for each distribution
     """    
     for dist in distributions:
         dist.total += dist.total_money
@@ -192,5 +201,5 @@ def end_month():
 app = Flask(__name__)
 
 @app.route('/')
-def hello():   
-    return 'hellold'
+def dashboard():
+    return render_template('/dashboard.html')

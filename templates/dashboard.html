@@ -14,15 +14,19 @@
 
             <tr>
                 <th>Distribution</th>
+                <th>Percentage</th>
                 <th>Total</th>
                 <th>Month</th>
             </tr>
 
+            {% for dist in list_distributions %}
             <tr>
-                <td>Ahorro</td>
-                <td>1000000</td>
-                <td>1000000</td>
+                <td>{{dist.name}}</td>
+                <td>{{dist.percentage}}</td>
+                <td>{{dist.total}}</td>
+                <td>{{dist.total_month}}</td>
             </tr>
+            {% endfor %}
 
         </table>
 
@@ -33,15 +37,46 @@
                 <th>Money</th>
             </tr>
 
+            {% for loc in list_locations %}
             <tr>
-                <td>Ahorro</td>
-                <td>522222</td>
+                <td>{{loc.name}}</td>
+                <td>{{loc.money}}</td>
             </tr>
+            {% endfor %}
 
         </table>
 
-        <button name="end_month" id="end_month">End month</button>
+        <form action="/distribution/create" method="post">
 
+            <label for="dist_percentage">Percentage: </label>
+            <input type="number" name="dist_percentage" id="dist_percentage">
+
+            <label for="dist_name">Name: </label>
+            <input type="text" name="dist_name" id="dist_name">
+
+            <button type="submit" name="create_distribution_button" value="create_distribution">create</button>
+
+        </form>
+
+        <form action="/location/create" method="post">
+
+            <label for="loc_name">Name: </label>
+            <input type="text" name="loc_name" id="loc_name">
+
+            <button type="submit" name="create_location_button" value="create_location">create</button>
+
+        </form>
+
+        <form action="/start" method="post">
+
+            <button type="submit" name="button_start_plan" value="start_plan">create</button>
+
+        </form>
+
+        <br>
+        <br>
+        <br>
+        <br>
         <form action="/lol" method="post">
 
             <label for="cost">Cost: </label>
@@ -68,7 +103,7 @@
             <label for="month">Take from month?</label>
             <input type="checkbox" name="month" id="month">
 
-            <button type="submit">lol</button>
+            <button type="submit">Cost</button>
         </form>
 
     </body>

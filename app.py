@@ -11,12 +11,14 @@ class Distribution:
     """    
 
     def __init__(self, percentage, name):        
-        if (percentage < 0 and percentage > 100):
-            self.percentage = percentage
-        else:
+        if (percentage < 0 or percentage > 100):
             raise Exception('The percentage for a distribution cannot be 0 or below, or over 100')
+        else:
+            self.percentage = percentage
 
         self.name = name
+        
+        self.percentage = percentage
 
         self.total_month = 0
 
@@ -51,7 +53,7 @@ class expense:
 def create_distribution(percentage, name):
     distributions.append(Distribution(percentage, name))
 
-def create_location(name, total):
+def create_location(name):
     locations.append(Location(name))
 
 def check_total_percentage():
@@ -206,8 +208,23 @@ app = Flask(__name__)
 
 @app.route('/')
 def dashboard():
-    return render_template('/dashboard.html')
+    return render_template('/dashboard.html', list_distributions=distributions, list_locations=locations)
+
+@app.route('/distribution/create', methods=['POST'])
+def view_create_distribution():
+    create_distribution(int(request.form['dist_percentage']), request.form['dist_name'])
+    return redirect('/')
+
+@app.route('/location/create', methods=['POST'])
+def view_create_location():
+    create_location(request.form['loc_name'])
+    return redirect('/')
+
+@app.route('/start', methods=['POST'])
+def view_start_plan():
+    start_plan()
+    return redirect('/')
 
 @app.route('/lol', methods=['POST'])
 def lol():
-    return render_template('/test.html')
+    return redirect('/')

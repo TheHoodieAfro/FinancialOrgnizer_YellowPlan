@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for, flash
 
 # Aplication variables
 distributions=[]
@@ -67,13 +67,12 @@ def check_total_percentage():
 def edit_percentage(distribution, new_percentage):
     temp = [x for x in distributions if x.name == distribution]
     
-    if temp.len() == 0:
+    if len(temp) == 0:
         return False
         
-    else:
-        temp[0].percentage = new_percentage
+    temp[0].percentage = new_percentage
         
-        return True
+    return True
 
 ## Advanced functions
 def start_plan():
@@ -83,6 +82,7 @@ def start_plan():
     for loc in locations:
         for dist in distributions:
             loc.money[dist.name] = 0
+    return True
 
 def add_previous_money(location, distribution, money):
     for loc in locations:
@@ -200,11 +200,12 @@ def end_month():
     """Merges the total amount of money with the money of the month for each distribution
     """    
     for dist in distributions:
-        dist.total += dist.total_money
-        dist.total_money = 0
+        dist.total += dist.total_month
+        dist.total_month = 0
 
 # Application API
 app = Flask(__name__)
+app.secret_key = 'c948fa4931abd65ec6174e2b'
 
 @app.route('/')
 def dashboard():
@@ -213,18 +214,43 @@ def dashboard():
 @app.route('/distribution/create', methods=['POST'])
 def view_create_distribution():
     create_distribution(int(request.form['dist_percentage']), request.form['dist_name'])
-    return redirect('/')
+    return redirect(url_for('dashboard'))
 
 @app.route('/location/create', methods=['POST'])
 def view_create_location():
     create_location(request.form['loc_name'])
-    return redirect('/')
+    return redirect(url_for('dashboard'))
 
 @app.route('/start', methods=['POST'])
 def view_start_plan():
-    start_plan()
-    return redirect('/')
+    state = start_plan()
+    if state == False:
+        flash('The distributions must sum up 100%')
+    return redirect(url_for('dashboard'))
+
+@app.route('/end', methods=['POST'])
+def view_end_month():
+    end_month()
+    return redirect(url_for('dashboard'))
+
+@app.route('/distribution/percentage/edit', methods=['POST'])
+def view_edit_percentage():
+    edit_percentage(request.form['dist_name'], int(request.form['dist_new_percentage']))
+    return redirect(url_for('dashboard'))
 
 @app.route('/lol', methods=['POST'])
 def lol():
-    return redirect('/')
+    return redirect(url_for('dashboard'))
+
+@app.route('/tests', methods=['POST'])
+def tests():
+    create_distribution(20, 'savings')
+    create_distribution(30, 'costs')
+    create_distribution(30, 'investments')
+    create_distribution(19, 'ahorro')
+    
+    create_location('bancolombia')
+    create_location('rappi')
+    create_location('cash')
+    create_location('emergency cash')
+    return redirect(url_for('dashboard'))

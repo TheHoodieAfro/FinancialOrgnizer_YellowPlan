@@ -5,7 +5,15 @@
 
         <meta charset="UTF-8">
         <title>Dashboard</title>
-
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
     </head>
 
     <body>
@@ -17,6 +25,7 @@
                 <th>Percentage</th>
                 <th>Total</th>
                 <th>Month</th>
+                <th>Edit</th>
             </tr>
 
             {% for dist in list_distributions %}
@@ -25,6 +34,17 @@
                 <td>{{dist.percentage}}</td>
                 <td>{{dist.total}}</td>
                 <td>{{dist.total_month}}</td>
+                <td>
+                    <form action="/distribution/percentage/edit" method="post">
+
+                        <input type="number" name="dist_new_percentage" id="dist_new_percentage">
+
+                        <input type="hidden" name="dist_name" id="dist_name" value='{{dist.name}}'>
+            
+                        <button type="submit" name="edit_percentage" value="edit_percentage">edit</button>
+            
+                    </form>
+                </td>
             </tr>
             {% endfor %}
 
@@ -69,7 +89,19 @@
 
         <form action="/start" method="post">
 
-            <button type="submit" name="button_start_plan" value="start_plan">create</button>
+            <button type="submit" name="button_start_plan" value="start_plan">start</button>
+
+        </form>
+
+        <form action="/end" method="post">
+
+            <button type="submit" name="button_end_month" value="end_month">end month</button>
+
+        </form>
+
+        <form action="/tests" method="post">
+
+            <button type="submit" name="button_tests" value="tests">test</button>
 
         </form>
 

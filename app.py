@@ -51,12 +51,31 @@ class expense:
 # Application logic
 ## Basic functions
 def create_distribution(percentage, name):
+    """Creates and saves a distribution
+
+    Args:
+        name (String): Name of the distribution
+        name (int): percetage of the distribution
+    """ 
+    
     distributions.append(Distribution(percentage, name))
 
 def create_location(name):
+    """Creates and saves a location
+
+    Args:
+        name (String): Name of the location
+    """    
+    
     locations.append(Location(name))
 
 def check_total_percentage():
+    """Checks if the sum of percetages in the distributions is 100
+
+    Returns:
+        Boolean: Returns True if the percetage is 100, False if not
+    """    
+    
     percentage = 0
 
     for dist in distributions:
@@ -65,6 +84,16 @@ def check_total_percentage():
     return True if percentage==100 else False
 
 def edit_percentage(distribution, new_percentage):
+    """Edits the percentage of the specified distribution
+
+    Args:
+        distribution (string): Name of the distributions to change the percetage
+        new_percentage (int): New percentage
+
+    Returns:
+        Boolean: Return True if the distribution exists and its percetage was changed, False if the distribution does not exist
+    """    
+    
     temp = [x for x in distributions if x.name == distribution]
     
     if len(temp) == 0:
@@ -76,6 +105,12 @@ def edit_percentage(distribution, new_percentage):
 
 ## Advanced functions
 def start_plan():
+    """Starts the plan, meaning, the money array is filed with distributions
+
+    Returns:
+        Boolean: Returns True if the plan was started succesfully, Flase if the total percentage was not 100
+    """    
+    
     if check_total_percentage() == False:
         return False
     
@@ -238,8 +273,13 @@ def view_edit_percentage():
     edit_percentage(request.form['dist_name'], int(request.form['dist_new_percentage']))
     return redirect(url_for('dashboard'))
 
-@app.route('/lol', methods=['POST'])
-def lol():
+@app.route('/money/add/previous', methods=['POST'])
+def view_add_previous_money():
+    add_previous_money(request.form['loc_name'], request.form['dist_name'], int(request.form['money']))
+    return redirect(url_for('dashboard'))
+
+@app.route('/spend', methods=['POST'])
+def spend():
     return redirect(url_for('dashboard'))
 
 @app.route('/tests', methods=['POST'])
@@ -247,7 +287,7 @@ def tests():
     create_distribution(20, 'savings')
     create_distribution(30, 'costs')
     create_distribution(30, 'investments')
-    create_distribution(19, 'ahorro')
+    create_distribution(20, 'ahorro')
     
     create_location('bancolombia')
     create_location('rappi')

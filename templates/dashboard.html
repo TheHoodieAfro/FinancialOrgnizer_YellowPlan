@@ -105,11 +105,34 @@
 
         </form>
 
+        <form action="/money/add/previous" method="post">
+
+            <label for="dist_name">Distribution: </label>
+            <select name="dist_name" id="dist_name">
+                {% for dist in list_distributions %}
+                    <option value='{{dist.name}}'>{{dist.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="loc_name">Location: </label>
+            <select name="loc_name" id="loc_name">
+                {% for loc in list_locations %}
+                    <option value='{{loc.name}}'>{{loc.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="money">Money: </label>
+            <input type="number" name="money" id="money">
+
+            <button type="submit" name="button_add_previous_money" value="add_previous_money">add</button>
+
+        </form>
+
         <br>
         <br>
         <br>
         <br>
-        <form action="/lol" method="post">
+        <form action="/spend" method="post">
 
             <label for="cost">Cost: </label>
             <input type="text" name="cost" id="cost">
@@ -135,7 +158,7 @@
             <label for="month">Take from month?</label>
             <input type="checkbox" name="month" id="month">
 
-            <button type="submit">Cost</button>
+            <button type="submit">spend</button>
         </form>
 
     </body>

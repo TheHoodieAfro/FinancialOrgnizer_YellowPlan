@@ -1,3 +1,5 @@
+from asyncio.windows_events import NULL
+from contextlib import nullcontext
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 # Aplication variables
@@ -205,28 +207,28 @@ def move_money_location(location_origin, location_end, distribution, money):
     return True
 
 def move_money_distribution(distribution_origin, distribution_end, location, money, month):
-    i = 0
-    origin = 0
-    end = 0
-
-    for dist in locations:
+    origin = distributions[0]
+    end = distributions[0]
+    
+    for dist in distributions:
         if dist.name == distribution_origin:
-            origin = i
+            origin = dist
         elif dist.name == distribution_end:
-            end = i
+            end = dist
+        
+    print(origin.name)
+    print(end.name)
 
-        i += 1
-
-    if month == True:
-        if distributions[origin].total_month >= money:
-            distributions[origin].total_month += -money
-            distributions[end].total_month += money
+    if month == 'True':
+        if origin.total_month >= money:
+            origin.total_month += -money
+            end.total_month += money
         else:
             return False
     else:
-        if distributions[origin].total >= money:
-            distributions[origin].total += -money
-            distributions[end].total += money
+        if origin.total >= money:
+            origin.total += -money
+            end.total += money
         else:
             return False
     

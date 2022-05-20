@@ -120,6 +120,14 @@ def start_plan():
     return True
 
 def add_previous_money(location, distribution, money):
+    """Adds money stored before the start of the plan
+
+    Args:
+        location (String): Name of the locations the money is
+        distribution (String): Name of the distribution the money is about
+        money (float): Amount of money to add
+    """    
+    
     for loc in locations:
         if loc.name == location:
             loc.money[distribution] = money
@@ -129,15 +137,32 @@ def add_previous_money(location, distribution, money):
             dist.total = money
 
 def static_income(location, money):
+    """Adds money as a static income, meaning its added to the locations specified with the distributions by percentage
+
+    Args:
+        location (String): Name of the locations
+        money (float): Amount of money
+    """    
+    
+    for loc in locations:
+        if loc.name == location:
+            loca = loc
+    
     for dist in distributions:
-        por = dist.percentage * money
+        por = (dist.percentage)/100 * money
         dist.total_month += por
 
-        for loc in locations:
-            if loc.name == location:
-                loc.money[dist.name] += por
+        loca.money[dist.name] += por
 
 def variable_income(distribution, location, money):
+    """Add money as a variable income, meaning its added to whatever distribution and locations without dividing it
+
+    Args:
+        distribution (String): Name of the distribution
+        location (String): Name of the locations
+        money (float): Amount of money
+    """        
+    
     for loc in locations:
         if loc.name == location:
             loc.money[distribution] += money
@@ -147,6 +172,18 @@ def variable_income(distribution, location, money):
             dist.total_month += money
 
 def move_money_location(location_origin, location_end, distribution, money):
+    """Moves the money from a locations distribution to another locations distribution
+
+    Args:
+        location_origin (String): Name of the origin location
+        location_end (String): Name of the ending location
+        distribution (String): Name of the distribution
+        money (float): Amount of money
+
+    Returns:
+        Boolean: False if the amount of money asked is not present in the locations distribution
+    """    
+    
     i = 0
     origin = 0
     end = 0
@@ -260,7 +297,7 @@ def view_create_location():
 def view_start_plan():
     state = start_plan()
     if state == False:
-        flash('The distributions must sum up 100%')
+        flash('The distributions must be 100%')
     return redirect(url_for('dashboard'))
 
 @app.route('/end', methods=['POST'])
@@ -270,12 +307,36 @@ def view_end_month():
 
 @app.route('/distribution/percentage/edit', methods=['POST'])
 def view_edit_percentage():
-    edit_percentage(request.form['dist_name'], int(request.form['dist_new_percentage']))
+    edit_percentage(request.form['dist_name'], float(request.form['dist_new_percentage']))
     return redirect(url_for('dashboard'))
 
 @app.route('/money/add/previous', methods=['POST'])
 def view_add_previous_money():
-    add_previous_money(request.form['loc_name'], request.form['dist_name'], int(request.form['money']))
+    add_previous_money(request.form['loc_name'], request.form['dist_name'], float(request.form['money']))
+    return redirect(url_for('dashboard'))
+
+@app.route('/money/add/static', methods=['POST'])
+def view_static_income():
+    static_income(request.form['loc_name'], float(request.form['money']))
+    return redirect(url_for('dashboard'))
+
+@app.route('/money/add/variable', methods=['POST'])
+def view_variable_income():
+    variable_income(request.form['dist_name'], request.form['loc_name'], float(request.form['money']))
+    return redirect(url_for('dashboard'))
+
+@app.route('/money/move/location', methods=['POST'])
+def view_move_money_location():
+    state = move_money_location(request.form['loc_name'], request.form['loc_name2'], request.form['dist_name'], float(request.form['money']))
+    if state == False:
+        flash('The locations distribution does not have that amount of money')
+    return redirect(url_for('dashboard'))
+
+@app.route('/money/move/distribution', methods=['POST'])
+def view_move_money_distribution():
+    state = move_money_distribution(request.form['dist_name'], request.form['dist_name2'], request.form['loc_name'], float(request.form['money']), request.form['month'])
+    if state == False:
+        flash('The distribution in the location does not have that amount of money')
     return redirect(url_for('dashboard'))
 
 @app.route('/spend', methods=['POST'])

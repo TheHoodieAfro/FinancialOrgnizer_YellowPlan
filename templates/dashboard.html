@@ -122,9 +122,111 @@
             </select>
 
             <label for="money">Money: </label>
-            <input type="number" name="money" id="money">
+            <input type="text" name="money" id="money">
 
             <button type="submit" name="button_add_previous_money" value="add_previous_money">add</button>
+
+        </form>
+
+        <form action="/money/add/static" method="post">
+
+            <label for="loc_name">Location: </label>
+            <select name="loc_name" id="loc_name">
+                {% for loc in list_locations %}
+                    <option value='{{loc.name}}'>{{loc.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="money">Money: </label>
+            <input type="text" name="money" id="money">
+
+            <button type="submit" name="button_add_static_income" value="add_static_income">add</button>
+
+        </form>
+
+        <form action="/money/add/variable" method="post">
+
+            <label for="dist_name">Distribution: </label>
+            <select name="dist_name" id="dist_name">
+                {% for dist in list_distributions %}
+                    <option value='{{dist.name}}'>{{dist.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="loc_name">Location: </label>
+            <select name="loc_name" id="loc_name">
+                {% for loc in list_locations %}
+                    <option value='{{loc.name}}'>{{loc.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="money">Money: </label>
+            <input type="text" name="money" id="money">
+
+            <button type="submit" name="button_add_variable_income" value="add_variable_income">add</button>
+
+        </form>
+
+        <form action="/money/move/location" method="post">
+
+            <label for="dist_name">Distribution: </label>
+            <select name="dist_name" id="dist_name">
+                {% for dist in list_distributions %}
+                    <option value='{{dist.name}}'>{{dist.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="loc_name">Location: </label>
+            <select name="loc_name" id="loc_name">
+                {% for loc in list_locations %}
+                    <option value='{{loc.name}}'>{{loc.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="loc_name2">Location: </label>
+            <select name="loc_name2" id="loc_name2">
+                {% for loc in list_locations %}
+                    <option value='{{loc.name}}'>{{loc.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="money">Money: </label>
+            <input type="text" name="money" id="money">
+
+            <button type="submit" name="button_move_money_location" value="move_money_location">add</button>
+
+        </form>
+
+        <form action="/money/move/distribution" method="post">
+
+            <label for="dist_name">Distribution: </label>
+            <select name="dist_name" id="dist_name">
+                {% for dist in list_distributions %}
+                    <option value='{{dist.name}}'>{{dist.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="dist_name2">Distribution: </label>
+            <select name="dist_name2" id="dist_name2">
+                {% for dist in list_distributions %}
+                    <option value='{{dist.name}}'>{{dist.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="loc_name">Location: </label>
+            <select name="loc_name" id="loc_name">
+                {% for loc in list_locations %}
+                    <option value='{{loc.name}}'>{{loc.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="money">Money: </label>
+            <input type="text" name="money" id="money">
+
+            <label for="month">Take from month?</label>
+            <input type="checkbox" name="month" id="month", value="True">
+
+            <button type="submit" name="button_move_money_distribution" value="move_money_distribution">add</button>
 
         </form>
 

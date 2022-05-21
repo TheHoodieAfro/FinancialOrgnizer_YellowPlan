@@ -207,6 +207,19 @@ def move_money_location(location_origin, location_end, distribution, money):
     return True
 
 def move_money_distribution(distribution_origin, distribution_end, location, money, month):
+    """Moves the money from a distribution in a locations to another
+
+    Args:
+        distribution_origin (String): Name of the origin distribution
+        distribution_end (String): Name of the end distribution
+        location (String): Name of the location
+        money (float): Amount of money
+        month (String): If the money should be taken from the month or total (True, False)
+
+    Returns:
+        Boolean: True if worked
+    """    
+    
     origin = distributions[0]
     end = distributions[0]
     
@@ -255,15 +268,15 @@ def spend_money(money, location, distribution, month):
     """    
     for loc in locations:
         if loc.name == location:
-            if loc[distribution] >= money:
-                loc[distribution] += -money
+            if loc.money[distribution] >= money:
+                loc.money[distribution] += -money
                 break
             else:
                 return False
 
     for dist in distributions:
         if dist.name == distribution:
-            if month == True:
+            if month == "True":
                 dist.total_month += -money
             else:
                 dist.total += -money
@@ -341,8 +354,11 @@ def view_move_money_distribution():
         flash('The distribution in the location does not have that amount of money')
     return redirect(url_for('dashboard'))
 
-@app.route('/spend', methods=['POST'])
-def spend():
+@app.route('/money/spend', methods=['POST'])
+def view_spend_money():
+    state = spend_money(float(request.form['money']), request.form['loc_name'], request.form['dist_name'], request.form['month'])
+    if state == False:
+        flash('Not enough money in there lil shite')
     return redirect(url_for('dashboard'))
 
 @app.route('/tests', methods=['POST'])

@@ -237,31 +237,30 @@
         <br>
         <br>
         <br>
-        <form action="/spend" method="post">
+        <form action="/money/spend" method="post">
 
-            <label for="cost">Cost: </label>
-            <input type="text" name="cost" id="cost">
+            <label for="money">Money: </label>
+            <input type="text" name="money" id="money">
 
-            <label for="distribution">Distribution: </label>
-            <input list="distributions" name="distribution" id="distribution">
-                <datalist id="distributions">
-                    <option value="ahorro"></option>
-                    <option value="emergency"></option>
-                    <option value="investment"></option>
-                    <option value="gastos"></option>
-                </datalist>
+            <label for="dist_name">Distribution: </label>
+            <select name="dist_name" id="dist_name">
+                {% for dist in list_distributions %}
+                    <option value='{{dist.name}}'>{{dist.name}}</option>
+                {% endfor %}
+            </select>
 
-            <label for="location">Location: </label>
-            <input list="locattions" name="locatio" id="location">
-                <datalist id="locattions">
-                    <option value="cash"></option>
-                    <option value="rappi"></option>
-                    <option value="emergency"></option>
-                    <option value="bank"></option>
-                </datalist>
+            <label for="loc_name">Location: </label>
+            <select name="loc_name" id="loc_name">
+                {% for loc in list_locations %}
+                    <option value='{{loc.name}}'>{{loc.name}}</option>
+                {% endfor %}
+            </select>
 
             <label for="month">Take from month?</label>
-            <input type="checkbox" name="month" id="month">
+            <input type="checkbox" name="month" id="month", value="True">
+    
+            <label for="month">Take from total?</label>
+            <input type="checkbox" name="month" id="month", value="False">
 
             <button type="submit">spend</button>
         </form>
